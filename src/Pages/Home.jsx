@@ -1,8 +1,13 @@
-import React from 'react'
+import React from 'react';
+import Includes from "../Components/Includes"
+import Plan from '../Components/Plan';
 
 function Home() {
   return (
-    <div>Home</div>
+    <>
+      <Includes />
+      <Plan />
+    </>
   )
 }
 

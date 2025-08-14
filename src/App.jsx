@@ -1,14 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Layout from './Layout/Layout';
 import Home from './Pages/Home'
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Layout />,
+      children:[
+        { path: '/', element: <Home /> }
+      ]
+    }
+  ])
 
   return (
     <>
-      <Home />
+      <RouterProvider router={router} />
     </>
   )
 }
