@@ -57,7 +57,7 @@ function FAQ() {
               ) : (
                 <Plus className="text-[#1B1139] mt-1 flex-shrink-0" size={22} />
               )}
-              <h3 className="font-semibold text-lg text-[#1B1139]">
+              <h3 className="inter-Semibold text-lg text-[#1B1139]">
                 {faq.question}
               </h3>
             </div>
@@ -65,7 +65,7 @@ function FAQ() {
             {openIndex === index && (
               <div className="flex items-start gap-3 mt-3">
                 <div className="w-[22px] flex-shrink-0"></div>
-                <p className="text-[#363049] leading-relaxed">
+                <p className="text-[#363049] leading-relaxed inter-Regular">
                   {faq.answer}
                 </p>
               </div>
