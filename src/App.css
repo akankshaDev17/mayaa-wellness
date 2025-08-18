@@ -24,6 +24,20 @@
 }
 
 @font-face {
+    font-family: Gilroy-Heavy;
+    src: url("./assets/Fonts/gilroy-heavy.ttf") format("truetype");
+    font-weight: bolder;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Gilroy-Regular;
+    src: url("./assets/Fonts/gilroy-regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: Urbanist-Regular;
     src: url("./assets/Fonts/Urbanist-Regular.ttf") format("truetype");
     font-weight: normal;
@@ -44,10 +58,24 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: Urbanist-Medium;
+    src: url("./assets/Fonts/Urbanist-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Juana-Medium;
+    src: url("./assets/Fonts/juana-medium.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 
 @font-face {
     font-family: Juana-Bold;
-    src: url("./assets/juana-bold.otf") format("opentype");
+    src: url("./assets/Fonts/juana-bold.otf") format("opentype");
     font-weight: bold;
     font-style: normal;
 }
@@ -56,10 +84,14 @@
    --font-gilroyBold: Gilroy-Bold, sans-serif;
    --font-gilroySemiBold: Gilroy-SemiBold, sans-serif;
    --font-gilroyMedium: Gilroy-Medium, sans-serif;
+   --font-gilroyHeavy: Gilroy-Heavy, sans-serif;
+   --font-gilroyRegular: Gilroy-Regular, sans-serif;
    --font-urbanistRegular: Urbanist-Regular, sans-serif;
    --font-urbanistBold: Urbanist-Bold, sans-serif;
    --font-urbanistSemiBold: Urbanist-SemiBold, sans-serif;
+   --font-urbanistMedium: Urbanist-Medium, sans-serif;
    --font-juanaBold: Juana-Bold, sans-serif;
+   --font-juanaMedium: Juana-Medium, sans-serif;
 }
 
 
@@ -78,3 +110,23 @@
   font-weight: 400;
   font-style: normal;
 }
+
+
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll-right {
+  animation: scroll-right 15s linear infinite;
+}
+
+.animate-scroll-left {
+  animation: scroll-left 15s linear infinite;
+}
+@fo

@@ -22,7 +22,7 @@ function Header() {
   };
 
   return (
-    <nav className="bg-[#F4FFFC] px-8 py-3 sticky top-0 z-50">
+    <nav className="bg-[#E8F8F5] px-8 py-3 sticky top-0 z-50">
       <div className="flex justify-between items-center sm:ml-15 sm:mr-8">
         <Link to="/" className="flex items-center ml-[-1rem]">
           <img src={mayaLogo} alt="Mayaa_Logo" className="h-12 w-auto" />
