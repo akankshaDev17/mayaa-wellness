@@ -1,1 +1,62 @@
 @import "tailwindcss";
+
+
+@font-face {
+    font-family: Gilroy-Bold;
+    src: url("./assets/Fonts/gilroy-bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Gilroy-SemiBold;
+    src: url("./assets/Fonts/gilroy-semibold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Gilroy-Medium;
+    src: url("./assets/Fonts/gilroy-medium.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Urbanist-Regular;
+    src: url("./assets/Fonts/Urbanist-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Urbanist-Bold;
+    src: url("./assets/Fonts/Urbanist-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Urbanist-SemiBold;
+    src: url("./assets/Fonts/Urbanist-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: Juana-Bold;
+    src: url("./assets/juana-bold.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@theme {
+   --font-gilroyBold: Gilroy-Bold, sans-serif;
+   --font-gilroySemiBold: Gilroy-SemiBold, sans-serif;
+   --font-gilroyMedium: Gilroy-Medium, sans-serif;
+   --font-urbanistRegular: Urbanist-Regular, sans-serif;
+   --font-urbanistBold: Urbanist-Bold, sans-serif;
+   --font-urbanistSemiBold: Urbanist-SemiBold, sans-serif;
+   --font-juanaBold: Juana-Bold, sans-serif;
+}

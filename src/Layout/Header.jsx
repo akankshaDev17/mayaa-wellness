@@ -23,7 +23,7 @@ function Header() {
 
   return (
     <nav className="bg-[#F4FFFC] px-8 py-3 sticky top-0 z-50">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center sm:ml-15 sm:mr-8">
         <Link to="/" className="flex items-center ml-[-1rem]">
           <img src={mayaLogo} alt="Mayaa_Logo" className="h-12 w-auto" />
         </Link>
@@ -31,25 +31,25 @@ function Header() {
         <div className="hidden md:flex items-center space-x-4 lg:space-x-8 ">
           <NavLink
             to="/about"
-            className="text-[#001F33] hover:text-[#1FA766] font-medium text-sm md:text-base lg:text-lg"
+            className="text-[#001F33] hover:text-[#1FA766] font-urbanistSemiBold text-sm md:text-base lg:text-lg"
           >
             About Us
           </NavLink>
           <NavLink
             to="/features"
-            className="text-[#001F33] hover:text-[#1FA766] font-medium text-sm md:text-base lg:text-lg"
+            className="text-[#001F33] hover:text-[#1FA766] font-urbanistSemiBold text-sm md:text-base lg:text-lg"
           >
             Features & Benefits
           </NavLink>
           <NavLink
             to="/plans"
-            className="text-[#001F33] hover:text-[#1FA766] font-medium text-sm md:text-base lg:text-lg"
+            className="text-[#001F33] hover:text-[#1FA766] font-urbanistSemiBold text-sm md:text-base lg:text-lg"
           >
             Plans
           </NavLink>
 
           <button
-            className="flex items-center gap-1 md:gap-2 lg:gap-3 bg-[#21B573] text-white text-xs md:text-sm lg:text-lgpx-3 md:px-4 lg:px-6 py-2 md:py-2.5 lg:py-3 rounded-full"
+            className="font-gilroyMedium cursor-pointer flex items-center gap-1 md:gap-2 lg:gap-3 bg-[#21B573] text-white text-xs md:text-sm lg:text-lgpx-3 md:px-4 lg:px-6 py-2 md:py-2.5 lg:py-3 rounded-full"
             style={{
               boxShadow: "6px 6px 0 #B8F5D2",
             }}
@@ -66,10 +66,9 @@ function Header() {
           </button>
         </div>
 
-
         <div className="flex items-center md:hidden gap-4 mr-[-1.2rem]">
           <button
-            className="flex items-center  bg-[#21B573] text-white 
+            className="font-gilroyMedium flex items-center  bg-[#21B573] text-white 
              text-sm sm:text-lg font-light px-3 py-1 sm:px-6 sm:py-3 
              rounded-full relative shadow-none"
             style={{
@@ -114,17 +113,26 @@ function Header() {
             }}
           >
             <MenuItem onClick={handleMenuClose}>
-              <NavLink to="/about" className="text-[#001F33] font-medium">
+              <NavLink
+                to="/about"
+                className="text-[#001F33] font-urbanistSemiBold"
+              >
                 About Us
               </NavLink>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-              <NavLink to="/features" className="text-[#001F33] font-medium">
+              <NavLink
+                to="/features"
+                className="text-[#001F33] font-urbanistSemiBold"
+              >
                 Features & Benefits
               </NavLink>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-              <NavLink to="/plans" className="text-[#001F33] font-medium">
+              <NavLink
+                to="/plans"
+                className="text-[#001F33] font-urbanistMedium"
+              >
                 Plans
               </NavLink>
             </MenuItem>

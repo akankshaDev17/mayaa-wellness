@@ -62,8 +62,8 @@ function Includes() {
   return (
     <section className="py-10 px-4 md:px-16">
       <div className="text-center md:text-left">
-        <h1 className="text-3xl font-bold text-[#09384D]">What's Included?</h1>
-        <p className="text-09384D mt-2">
+        <h1 className="font-gilroySemiBold text-3xl font-bold text-[#09384D]">What's Included?</h1>
+        <p className="text-09384D mt-2 font-urbanistRegular">
           Everything Your Child Needs, All in One Health Plan
         </p>
       </div>
@@ -77,10 +77,10 @@ function Includes() {
             className={`${item.bgColor} p-6 rounded-tr-[35px] rounded-br-[35px] rounded-tl-xl rounded-bl-xl flex flex-col justify-between text-center md:text-left `}
           >
             <div>
-              <h3 className={`text-lg font-bold ${item.textColor} mb-2`}>
+              <h3 className={`text-lg font-urbanistBold ${item.textColor} mb-2`}>
                 {item.title}
               </h3>
-              <p className={`text-sm ${item.paraColor} `}>{item.desc}</p>
+              <p className={`text-sm font-urbanistRegular ${item.paraColor} `}>{item.desc}</p>
             </div>
             <div className="mt-4 flex justify-center md:justify-start xl:justify-end ">
               <div className={`w-20 h-20 rounded-full ${item.imgCircle} xl:mt-[-1rem] xl:mr-[1rem]`}>
