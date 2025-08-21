@@ -88,72 +88,80 @@ export default function PricingTable() {
 
   return (
     <>
-      <div className="text-center sm:mb-24 mb-8">
-        <h1 className="text-4xl font-semibold text-[#0B2110] mb-2">
+      <div className="text-center sm:mb-18 mb-4">
+        <h1 className="text-xl font-semibold text-[#0B2110] mb-2 sm:hidden">
           Your Health, Your Plan{" "}
-          <span className="block sm:hidden text-[#31B07B] text-4xl font-semibold">
-            <span className="text-[#0B2110]">—</span> at the
-          </span>
-          <span className="hidden sm:inline text-[#31B07B] text-4xl font-semibold">
-            <span className="text-[#0B2110]">—</span> at the
-          </span>
+          <span className="text-[#0B2110]">—</span>{" "}
+          <span className="text-[#31B07B]">at the Right Price</span>
         </h1>
-        <h1 className="text-4xl font-semibold text-[#31B07B]">Right Price</h1>
+
+        <div className="hidden sm:block">
+          <h1 className="text-4xl font-semibold text-[#0B2110] mb-2">
+            Your Health, Your Plan{" "}
+            <span className="text-[#31B07B]">
+              <span className="text-[#0B2110]">—</span> at the
+            </span>
+          </h1>
+          <h1 className="text-4xl font-semibold text-[#31B07B]">Right Price</h1>
+        </div>
       </div>
 
-      {/* <div className="xl:ml-[35.5rem] sm:ml-[17.2rem] hidden xl:block">
-        <button className="bg-[#F7FF0D] p-1 px-10 ">
-          Most Popular
-        </button>
-      </div> */}
 
-      <div className="relative w-full max-w-6xl mx-auto p-10 rounded-3xl bg-[#F3F3F3]">
-        <div className=" rounded-lg  overflow-hidden  mb-[-2.5rem]">
-          <div className="overflow-x-auto mt-[-1rem] ">
-            <table className="w-full ">
-              <thead className="border-b border-[#000000]">
+      <div className="relative w-full max-w-6xl mx-auto p-4 sm:p-10 rounded-3xl bg-[#F3F3F3]">
+        <div className="rounded-lg overflow-hidden mb-[-2.5rem]">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse min-w-[700px]">
+              <thead className="border-b border-[#000000] ">
                 <tr>
-                  <th className="bg-[#F3F3F3] text-[#09384D] font-gilroySemiBold p-2 text-left font-bold sm:text-3xl text-2xl border-r border-gray-200">
+                  <th className="sticky  left-0 z-10 bg-[#F3F3F3] text-[#09384D] font-gilroySemiBold p-2 text-left font-bold sm:text-2xl text-lg border-r border-gray-200">
                     Plan Description
                   </th>
+
                   {plans.map((plan, i) => (
                     <th
                       key={i}
-                      className={`p-0  cursor-pointer transition-all duration-200 }`}
+                      className="p-2 cursor-pointer text-center min-w-[150px]"
                       onClick={() => handlePlanSelect(i)}
                     >
+                      {/* For large screen most popular*/}
                       {i === 0 && (
-                        <div className="absolute mt-[-3rem] hidden lg:block">
-                          <span className="bg-[#F7FF0D] text-black font-gilroyMedium text-sm  p-1 px-10 rounded-md shadow-md">
+                        <div className="absolute mt-[-4.62rem] hidden lg:block">
+                          <span className="bg-[#F7FF0D] text-black font-gilroyMedium text-sm  p-1 px-10 ">
                             Most Popular
                           </span>
                         </div>
                       )}
-                      <div
-                        className={`p-3 text-white 
-                        } transition-all duration-200`}
-                      >
-                        <div className="p-2">
-                          <button
-                            className={`font-gilroyBold cursor-pointer text-lg px-4 py-2 rounded-xl w-32 text-center
-                                        ${
-                                          selectedPlan === i
-                                            ? `text-[#FFFFFF] bg-[#616161]`
-                                            : `text-[#000000] bg-[#F3F3F]`
-                                        }   ${plan.border}`}
-                          >
-                            {plan.name}
-                          </button>
-                        </div>
 
-                        {plan.tagline && (
-                          <div
-                            className={`mt-1 mb-[-0.8rem] font-gilroyMedium text-[15px] text-center text-white ml-[-0.6rem] mr-[-0.6rem] rounded-t-2xl 
-                                        ${plan.taglineBg}`}
-                          >
-                            {plan.tagline}
-                          </div>
+                      <div className="relative  w-full sm:mt-[-0.5rem] mt-[2rem]">
+                        {/* For small screen most popular*/}
+                        {i === 0 && (
+                            <span
+                              className="sm:hidden absolute -top-6  left-1/2 -translate-x-1/2 bg-[#F7FF0D] text-black 
+                                          font-gilroyMedium text-xs sm:text-sm  shadow-md ml-0 mr-[-2rem] py-2 pr-2 pl-4 mt-[-1rem] "
+                            >
+                              Most Popular
+                            </span>
                         )}
+                      
+                      <button
+                        className={`font-gilroyBold cursor-pointer text-sm sm:text-lg px-4 py-2 rounded-xl w-full
+                              ${
+                                selectedPlan === i
+                                  ? "text-white bg-[#616161]"
+                                  : "text-black bg-[#F3F3F3] border"
+                              }`}
+                      >
+                        {plan.name}
+                      </button>
+
+                      {plan.tagline && (
+                        <div
+                          className={`mt-3 mb-[-0.5rem] font-gilroyMedium text-[15px] text-center text-white ml-[-0.3rem] mr-[-0.3rem] sm:ml-0 sm:mr-0 gap-6 rounded-t-2xl 
+                                        ${plan.taglineBg}`}
+                        >
+                          {plan.tagline}
+                        </div>
+                      )}
                       </div>
                     </th>
                   ))}
@@ -163,31 +171,31 @@ export default function PricingTable() {
               <tbody>
                 {featuresList.map((feature, rowIndex) => (
                   <tr key={rowIndex} className="border-b border-gray-100">
-                    <td className="p-4 text-left font-gilroyMedium border-r border-gray-200 bg-[#F3F3F3]">
+                    <td className="sticky left-0 z-10 bg-[#F3F3F3] p-3 text-left font-gilroyMedium border-r border-gray-200 text-xs sm:text-sm">
                       {feature}
                     </td>
                     {plans.map((plan, colIndex) => (
                       <td
                         key={colIndex}
-                        className={`p-4  text-center transition-all duration-200 ${
+                        className={`p-3 text-center min-w-[150px] ${
                           selectedPlan === colIndex
                             ? "bg-[#CFFFD9]"
                             : "bg-[#F0F0F0]"
                         }`}
                       >
                         {rowIndex === 0 ? (
-                          <span className="font-bold text-lg">
+                          <span className="font-bold text-sm sm:text-lg">
                             {plan.sumInsured}
                           </span>
                         ) : plan.features[rowIndex] ? (
                           <Check
                             className="mx-auto text-[#CFFFD9] bg-[#349C4B] rounded-full p-1"
-                            size={24}
+                            size={20}
                           />
                         ) : (
                           <Minus
                             className="mx-auto text-gray-400 bg-gray-200 rounded-full p-1"
-                            size={24}
+                            size={20}
                           />
                         )}
                       </td>
@@ -195,18 +203,18 @@ export default function PricingTable() {
                   </tr>
                 ))}
 
-                <tr className="">
-                  <td className="p-4 text-left font-gilroyBold text-lg border-r border-gray-200 bg-[#F3F3F3]">
+                <tr>
+                  <td className="sticky left-0 z-10 bg-[#F3F3F3] p-3 text-left font-gilroyBold text-sm sm:text-lg border-r border-gray-200">
                     Price / year
                   </td>
                   {plans.map((plan, i) => (
                     <td
                       key={i}
-                      className={`p-4 text-center transition-all duration-200 ${
+                      className={`p-3 text-center min-w-[150px] ${
                         selectedPlan === i ? "bg-[#CFFFD9]" : "bg-[#F0F0F0]"
                       }`}
                     >
-                      <span className="font-gilroyBold text-2xl text-[#000000]">
+                      <span className="font-gilroyBold text-lg sm:text-2xl">
                         {plan.price}
                       </span>
                     </td>

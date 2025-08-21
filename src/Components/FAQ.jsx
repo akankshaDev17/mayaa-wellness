@@ -38,7 +38,7 @@ function FAQ() {
 
   return (
     <div className="max-w-5xl mx-auto py-16 px-6">
-      <h2 className="font-gilroyBold text-center text-3xl sm:text-4xl font-bold text-[#35332F] mb-12">
+      <h2 className="font-gilroyBold text-center text-2xl sm:text-4xl font-bold text-[#35332F] mb-12">
         Frequently Ask Questions
       </h2>
 
@@ -65,7 +65,7 @@ function FAQ() {
             {openIndex === index && (
               <div className="flex items-start gap-3 mt-3">
                 <div className="w-[22px] flex-shrink-0"></div>
-                <p className="text-[#363049] leading-relaxed inter-Regular">
+                <p className="text-[#363049]  leading-relaxed inter-Regular">
                   {faq.answer}
                 </p>
               </div>

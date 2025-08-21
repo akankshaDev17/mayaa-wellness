@@ -129,4 +129,23 @@
 .animate-scroll-left {
   animation: scroll-left 15s linear infinite;
 }
-@fo
+
+
+
+@keyframes carousel {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-160%);
+  }
+}
+
+.animate-carousel {
+  animation: carousel 12s linear infinite;
+}
+
+.animate-carousel:hover{
+  animation-play-state: paused;
+}
+
