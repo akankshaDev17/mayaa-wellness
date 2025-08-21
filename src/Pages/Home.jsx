@@ -7,7 +7,8 @@ import Pop from "../Components/Pop"
 import Trusted from "../Components/Trusted";
 import Review from "../Components/Review"
 import ReviewOverview from '../Components/ReviewOverview';
-import Working from "../Components/Working"
+import Working from "../Components/Working";
+import Form from "../Components/Form"
 
 function Home() {
   return (
@@ -18,6 +19,7 @@ function Home() {
       <Includes />
       <Plan />
       <Review />
+      <Form />
       <ReviewOverview />
       <Working />
       <FAQ />

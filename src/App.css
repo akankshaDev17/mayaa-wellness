@@ -111,7 +111,7 @@
   font-style: normal;
 }
 
-
+@import "tailwindcss";
 @keyframes scroll-right {
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0); }
@@ -126,8 +126,28 @@
   animation: scroll-right 15s linear infinite;
 }
 
-.animate-scroll-left {
+ .animate-scroll-left {
   animation: scroll-left 15s linear infinite;
+} 
+.animate-scroll-right-fast:hover{
+  animation-play-state: paused;
+}
+.animate-scroll-left-fast:hover {
+  animation-play-state: paused;
+}
+.animate-scroll-right-fast { animation: scroll-right 8s linear infinite; }
+.animate-scroll-left-fast { animation: scroll-left 8s linear infinite; }
+@keyframes trusted-marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.trusted-animate-right {
+  animation: trusted-marquee-right 15s linear infinite;
+  will-change: transform;
+}
+.trusted-animate-right:hover{
+animation-play-state: paused;
 }
 
 
