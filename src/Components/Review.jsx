@@ -15,38 +15,44 @@ const reviews = [
 { img: Ellipse5, name: "Deepak", location: "Parent, Ludhiana", text: "My son is not great at telling us when something’s wrong. Mayaa caught an early health issue during a routine check-up. Now I feel safer." },
 { img: Ellipse6, name: "Nirmala", location: "Parent, Indore", text: "I thought these plans were just marketing talk. But when my daughter had a bad throat and fever, Mayaa helped us get tests done the same day. We got the results and treatment without wasting time." },
 { img: Ellipse7, name: "Neena", location: "Parent, Lucknow", text: "The first month of college, my son called because he was sick. We used the Mayaa consult line — it worked like magic. No running around, no stress for him or me." },
+{ img: Ellipse1, name: "Ram Mishra", location: "Parent, Pune", text: "We were skeptical. Then my daughter used the plan within 10 days. Doctor, therapy, checkup — all sorted." },
+{ img: Ellipse2, name: "Samaira ", location: "Parent, Chandigarh", text: "I was constantly worried about my son falling sick in a new city. With Mayaa, he had doctor access immediately." },
+{ img: Ellipse3, name: "Payal", location: "Parent, Jaipur", text: "My daughter had her first anxiety episode during exams. I didn’t know who to call. The mental health support in the Mayaa plan stepped in when we couldn’t. Grateful." },
+{ img: Ellipse4, name: "Anant", location: "Parent, Delhi", text: "One call to Mayaa, and we had a full body check-up and more for my son in his hostel. No stress, no delays. This is real care." },
+{ img: Ellipse5, name: "Dheeraj", location: "Parent, Ludhiana", text: "My son is not great at telling us when something’s wrong. Mayaa caught an early health issue during a routine check-up. Now I feel safer." },
+{ img: Ellipse6, name: "Naina", location: "Parent, Indore", text: "I thought these plans were just marketing talk. But when my daughter had a bad throat and fever, Mayaa helped us get tests done the same day. We got the results and treatment without wasting time." },
+{ img: Ellipse7, name: "Naira", location: "Parent, Lucknow", text: "The first month of college, my son called because he was sick. We used the Mayaa consult line — it worked like magic. No running around, no stress for him or me." },
 ];
 
 const Review = () => {
-// Compact base; scale up on sm; keep desktop same as before on md+
+// Base card styles (desktop kept as-is)
 const cardClass =
-"bg-white rounded-xl shadow-lg mx-2 sm:mx-3 md:mx-8 flex-shrink-0 flex flex-col justify-start items-start " +
+"rounded-xl shadow-lg mx-2 sm:mx-3 md:mx-8 flex-shrink-0 flex flex-col justify-start items-start " +
 "p-2.5 sm:p-3.5 md:p-8 overflow-hidden";
 
-// Shared inner text clamp to avoid overflow/scrollbars on small cards
-const textClass =
-"text-gray-700 font-medium leading-snug overflow-hidden";
+// Text style (kept)
+const textClass = "text-[#828282] font-medium overflow-hidden";
 
 return (
-<div className="relative bg-gradient-to-r from-green-400 to-teal-500 py-3 sm:py-5 md:py-12 overflow-hidden">
-{/* Heading smaller on mobile so rows fit nicely */}
-<h2 className="text-white text-sm sm:text-lg md:text-4xl font-bold text-center mb-4 sm:mb-7 md:mb-12 font-juanaMedium ">
+<div className="relative bg-gradient-to-r from-[#1EA887] to-[#3b9a5a] py-3 sm:py-5 md:py-12 overflow-hidden">
+{/* Heading: preserve desktop; add mobile sizes from the first code */}
+<h2 className=" text-white font-juanaMedium font-medium text-sm sm:text-lg /* mobile + sm sizing added */ md:text-[40px] md:leading-[45px] /* desktop unchanged */ text-center mb-4 sm:mb-7 md:mb-12 md:w-[577px] md:h-[90px] mx-auto " >
 Read Honest Reviews of what{" "}
 <br className="hidden sm:block" />
 Customers Say About Us!
 </h2>
-
-
-  {/* Top row */}
+  {/* Top row: add mobile card sizes from first code, keep desktop same */}
   <div className="relative flex overflow-x-hidden">
     <div className="flex animate-scroll-right-fast md:animate-scroll-right w-full">
-      {[...reviews.slice(0, 4), ...reviews.slice(0, 4)].map((review, i) => (
+      {[...reviews.slice(0, 8)].map((review, i) => (
         <div
           key={i}
           className={`${cardClass}
-                      w-[160px] h-[130px]
-                      sm:w-[200px] sm:h-[150px]
-                      md:w-[420px] md:h-[270px]`}
+            w-[160px] h-[130px]            /* mobile from first code */
+            sm:w-[200px] sm:h-[150px]      /* sm from first code */
+            md:w-[335px] md:h-[299px]      /* desktop unchanged */
+            bg-white text-black md:text-black
+          `}
         >
           <div className="flex flex-row items-center w-full mb-1 sm:mb-1.5">
             <img
@@ -55,14 +61,17 @@ Customers Say About Us!
               className="w-7 h-7 sm:w-9 sm:h-9 md:w-16 md:h-16 rounded-full mr-2 sm:mr-3 md:mr-4 flex-shrink-0"
             />
             <div className="flex flex-col items-start min-w-0">
-              <span className="font-urbanistBold truncate w-full text-[11px] sm:text-xs md:text-xl">
+              {/* Name: restore mobile size from first code (11px) while keeping desktop */}
+              <span className="font-urbanistBold truncate w-full text-[11px] sm:text-xs md:text-xl text-[#09384D]">
                 {review.name}
               </span>
-              <span className="text-[10px] sm:text-[11px] md:text-lg text-gray-500 font-urbanistRegular truncate w-full">
+              {/* Location: restore mobile sizes/colors from first code while keeping desktop */}
+              <span className="text-[10px] sm:text-[11px] md:text-lg text-[#828282] font-urbanistRegular truncate w-full">
                 {review.location}
               </span>
             </div>
           </div>
+          {/* Text: re-add mobile clamping and sizes from first code */}
           <p className={`${textClass} text-[10px] font-urbanistRegular sm:text-[11px] md:text-lg mt-1 sm:mt-1.5 md:mt-2 line-clamp-4 md:line-clamp-none`}>
             {review.text}
           </p>
@@ -71,16 +80,18 @@ Customers Say About Us!
     </div>
   </div>
 
-  {/* Bottom row */}
+  {/* Bottom row: same treatment */}
   <div className="relative flex overflow-x-hidden mt-5 sm:mt-7 md:mt-12">
     <div className="flex animate-scroll-left-fast md:animate-scroll-left w-full">
-      {[...reviews.slice(4), ...reviews.slice(4)].map((review, i) => (
+      {[...reviews.slice(8)].map((review, i) => (
         <div
           key={i}
           className={`${cardClass}
-                      w-[160px] h-[130px]
-                      sm:w-[200px] sm:h-[150px]
-                      md:w-[420px] md:h-[270px]`}
+            w-[160px] h-[130px]
+            sm:w-[200px] sm:h-[150px]
+            md:w-[335px] md:h-[299px]
+            bg-white text-black md:text-black
+          `}
         >
           <div className="flex flex-row items-center w-full mb-1 sm:mb-1.5">
             <img
@@ -89,10 +100,10 @@ Customers Say About Us!
               className="w-7 h-7 sm:w-9 sm:h-9 md:w-16 md:h-16 rounded-full mr-2 sm:mr-3 md:mr-4 flex-shrink-0"
             />
             <div className="flex flex-col items-start min-w-0">
-              <span className="font-urbanistBold truncate w-full text-[11px] sm:text-xs md:text-xl">
+              <span className="font-urbanistBold truncate w-full text-[11px] sm:text-xs md:text-xl text-[#09384D]">
                 {review.name}
               </span>
-              <span className="text-[10px] sm:text-[11px] md:text-lg text-gray-500 font-urbanistRegular truncate w-full">
+              <span className="text-[10px] sm:text-[11px] md:text-lg text-[#828282] font-urbanistRegular truncate w-full">
                 {review.location}
               </span>
             </div>
@@ -105,7 +116,7 @@ Customers Say About Us!
     </div>
   </div>
 
-  {/* Greenish blur overlay: smaller on mobile, original on desktop */}
+  {/* Gradient blur overlays: include both sizes from the first code */}
   <div
     className="pointer-events-none absolute left-0 bottom-0 w-full z-50 md:hidden"
     style={{

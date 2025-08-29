@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-
+* {
+  /* overflow: scroll !important; */
+}
 @font-face {
     font-family: Gilroy-Bold;
     src: url("./assets/Fonts/gilroy-bold.ttf") format("truetype");
