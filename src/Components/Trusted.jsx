@@ -29,7 +29,7 @@ const Trusted = () => {
       absolute
     "
     style={{
-      width: "648px",
+      width: "348px",
       height: "81px",
       top: "177px",
       left: "-109px",

@@ -44,7 +44,7 @@ Customers Say About Us!
   {/* Top row: add mobile card sizes from first code, keep desktop same */}
   <div className="relative flex overflow-x-hidden">
     <div className="flex animate-scroll-right-fast md:animate-scroll-right w-full">
-      {[...reviews.slice(0, 8)].map((review, i) => (
+      {[...reviews.slice(0, 8),...reviews.slice(0,8)].map((review, i) => (
         <div
           key={i}
           className={`${cardClass}
@@ -83,7 +83,7 @@ Customers Say About Us!
   {/* Bottom row: same treatment */}
   <div className="relative flex overflow-x-hidden mt-5 sm:mt-7 md:mt-12">
     <div className="flex animate-scroll-left-fast md:animate-scroll-left w-full">
-      {[...reviews.slice(8)].map((review, i) => (
+      {[...reviews.slice(8),...reviews.slice(8)].map((review, i) => (
         <div
           key={i}
           className={`${cardClass}

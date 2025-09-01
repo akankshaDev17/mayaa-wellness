@@ -32,7 +32,7 @@ const Hero = () => {
         {/* Content wrapper (kept above wedge) */}
         <div className="relative z-10">
           {/* Headline (4 lines, as per SS1) */}
-          <h1 className="font-gilroyBold text-[35.26px] leading-[1.11] text-center">
+          <h1 className="font-gilroyBold text-[31.26px] leading-[1.11] text-center">
             <span className="block text-[#1EA887]">Your Child Is Leaving</span>
             <span className="block">
               <span className="text-[#1EA887]">for College.</span>{" "}
@@ -43,9 +43,9 @@ const Hero = () => {
           </h1>
 
           {/* Subtext */}
-          <p className="font-urbanistRegular text-[#09384D] text-[18px] leading-[1.5] text-center mt-4 max-w-[349px] mx-auto">
+          <p className="font-urbanistRegular text-[#09384D] text-[16px] leading-[1.5] text-center mt-4 max-w-[349px] mx-auto">
             24/7 doctor consults, mental health support, annual checkups, and
-            accident insurance — all in one affordable plan.
+            accident insurance<br/>— all in one affordable plan.
           </p>
 
           {/* Protect CTA */}

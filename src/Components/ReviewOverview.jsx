@@ -39,10 +39,10 @@ const ReviewOverview = () => {
       >
         {/* 1 */}
         <div className="flex flex-col items-center flex-1">
-          <span className="text-[13px] leading-none sm:text-[20px] md:text-[52px] lg:text-[52px] md:leading-[1] font-gilroyHeavy">
+          <span className="text-[11px] leading-none sm:text-[20px] md:text-[52px] lg:text-[52px] md:leading-[1] font-gilroyHeavy">
             20,000+
           </span>
-          <span className="text-[9px] leading-[11px] sm:text-xs sm:leading-tight md:text-[25.41px] md:leading-[1] font-gilroyMedium opacity-95">
+          <span className="text-[8px] leading-[11px] sm:text-xs sm:leading-tight md:text-[25.41px] md:leading-[1] font-gilroyMedium opacity-95">
             Network Hospitals
           </span>
         </div>

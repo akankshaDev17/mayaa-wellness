@@ -1,296 +1,167 @@
+// Install dependencies first:
+// npm install react-icons react-toastify
+
 import React, { useState } from "react";
-import { FaUserAlt, FaPhoneAlt, FaRegEnvelope, FaTimes } from "react-icons/fa";
+import { MdCall } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const brand = "#0D3B45";
+function isValidName(name) {
+  // Only letters and spaces, len >= 2
+  return /^[A-Za-z\s]{2,}$/.test(name);
+}
 
-// Toast with brand bg + close icon
-const Toast = ({ message, onClose }) => (
-  <div
-    className="fixed left-1/2 top-4 -translate-x-1/2 z-50 flex items-center gap-2 rounded-md px-2 py-1 text-[9px] font-semibold text-white shadow-lg 
-               sm:px-3 sm:py-2 sm:text-xs"
-    style={{ backgroundColor: brand }}
-  >
-    <span>{message}</span>
-    <button
-      type="button"
-      className="rounded p-0.5 hover:bg-white/15 transition"
-      onClick={onClose}
-      aria-label="Close toast"
-    >
-      <FaTimes size={10} className="text-white sm:w-3 sm:h-3" />
-    </button>
-  </div>
-);
+function isValidPhone(phone) {
+  // Accepts only 10-digits (common for India); adjust for other regions
+  return /^[6-9][0-9]{9}$/.test(phone);
+}
 
-const Form = ({ topMargin = "mt-20", maxWidthClass = "max-w-6xl" }) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [agreed, setAgreed] = useState(false);
-
-  const [nameError, setNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [tncError, setTncError] = useState("");
+export default function Form() {
+  const [form, setForm] = useState({ name: "", phone: "" });
+  const [errors, setErrors] = useState({ name: "", phone: "" });
+  const [touched, setTouched] = useState({ name: false, phone: false });
   const [submitted, setSubmitted] = useState(false);
 
-  const [toast, setToast] = useState("");
-
-  // validations
-  const validateName = (value) => (!value ? "Please enter your name." : "");
-  const validatePhone = (value) => {
-    if (!value) return "Please enter your number.";
-    if (!/^[0-9]{10}$/.test(value)) return "Phone number must be 10 digits.";
-    return "";
-  };
-  const validateEmail = (value) => {
-    if (!value) return "Please enter your email.";
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    if (!emailRegex.test(value)) return "Please enter a valid email address.";
-    return "";
-  };
-
-  // handlers
-  const handleNameChange = (e) => {
-    const value = e.target.value.replace(/[^A-Za-z\s]/g, "");
-    setName(value);
-    if (submitted) setNameError(validateName(value));
-  };
-  const handlePhoneChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 10);
-    setPhone(value);
-    if (submitted) setPhoneError(validatePhone(value));
-  };
-  const handleEmailChange = (e) => {
-    const value = e.target.value.trim();
-    setEmail(value);
-    if (submitted) setEmailError(validateEmail(value));
-  };
-  const handleTncChange = () => {
-    const next = !agreed;
-    setAgreed(next);
-    if (submitted)
-      setTncError(next ? "" : "Kindly agree to the terms and conditions.");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "name") {
+      // Block numbers immediately
+      const filteredValue = value.replace(/[0-9]/g, "");
+      setForm((prev) => ({ ...prev, name: filteredValue }));
+      setErrors((prev) => ({
+        ...prev,
+        name: filteredValue && !isValidName(filteredValue) ? "Enter a valid name" : "",
+      }));
+    } else if (name === "phone") {
+      // Only allow digits, max 10
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
+      setForm((prev) => ({ ...prev, phone: digitsOnly }));
+      setErrors((prev) => ({
+        ...prev,
+        phone: digitsOnly.length !== 10 ? "Enter a valid phone number" : "",
+      }));
+    }
   };
 
-  const handleBlur = () => {
-    if (!submitted) return;
-    setNameError(validateName(name));
-    setPhoneError(validatePhone(phone));
-    setEmailError(validateEmail(email));
-    setTncError(agreed ? "" : "Kindly agree to the terms and conditions.");
+  const handleBlur = (e) => {
+    setTouched({ ...touched, [e.target.name]: true });
+    // Show error if empty on blur
+    if (!form[e.target.name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.name === "name"
+          ? "Enter a valid name"
+          : "Enter a valid phone number",
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setTouched({ name: true, phone: true }); // Mark both as touched
+    const nameValid = isValidName(form.name);
+    const phoneValid = form.phone.length === 10 && isValidPhone(form.phone);
+
+    setErrors({
+      name: !nameValid ? "Enter a valid name" : "",
+      phone: !phoneValid ? "Enter a valid phone number" : "",
+    });
+
+    if (!nameValid || !phoneValid) return;
+
+    toast.success("Form submitted successfully!", {
+      position: "top-center",
+      autoClose: 2000,
+      closeOnClick: true,
+      draggable: false,
+      pauseOnHover: false,
+      toastStyle: {
+        fontSize: 22,
+        fontFamily: "Urbanist, sans-serif",
+        fontWeight: "bold",
+        textAlign: "center",
+        borderRadius: "22px",
+      },
+    });
     setSubmitted(true);
-
-    const nameErr = validateName(name);
-    const phoneErr = validatePhone(phone);
-    const emailErr = validateEmail(email);
-    const tncErr = agreed ? "" : "Kindly agree to terms and condition.";
-
-    setNameError(nameErr);
-    setPhoneError(phoneErr);
-    setEmailError(emailErr);
-    setTncError(tncErr);
-
-    if (!nameErr && !phoneErr && !emailErr && !tncErr) {
-      setToast("Form submitted successfully!");
-      setName("");
-      setPhone("");
-      setEmail("");
-      setAgreed(false);
-      setSubmitted(false);
-      setTimeout(() => setToast(""), 2000);
-    }
   };
 
-  // Help line under inputs
-  const HelpLine = ({ error }) => (
-    <div className="mt-0 h-[10px] leading-[10px] sm:mt-1 sm:h-5">
-      {error ? (
-        <span className="text-[9px] leading-[10px] text-red-600 sm:text-xs">
-          {error}
-        </span>
-      ) : (
-        <span className="invisible text-[9px] leading-[10px] sm:text-xs">.</span>
-      )}
+  return (
+    <div className="bg-white rounded-[30px] sm:rounded-[47px] shadow-lg w-[320px] sm:w-[655px] h-[450px] sm:h-[739px] flex flex-col items-center py-4 sm:py-6 px-2 mx-auto relative">
+      <div className="mt-8 sm:mt-12 mb-4 sm:mb-6 flex justify-center">
+        <div className="flex items-center justify-center w-[80px] sm:w-[127px] h-[80px] sm:h-[127px] rounded-full bg-[#1EA887] mb-4 sm:mb-6">
+          <MdCall size={55} color="#fff" />
+        </div>
+      </div>
+      <h1
+        className="mb-2 sm:mb-3 text-[24px] sm:text-[41px] text-[#000000] font-juanaMedium"
+        style={{ fontWeight: "400" }}
+      >
+        Request call back
+      </h1>
+      <div
+        className="mb-4 sm:mb-8 text-[14px] sm:text-[20px] text-[#09384D] font-urbanistRegular text-center px-3 sm:px-4"
+        style={{ fontWeight: 400 }}
+      >
+        Let our experts guide you to the perfect plan.
+      </div>
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col items-center gap-3 sm:gap-4"
+        autoComplete="off"
+      >
+        <div className="w-[280px] sm:w-[559px]">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={form.name}
+            disabled={submitted}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className="w-full h-[50px] sm:h-[69px] rounded-[11px] bg-[#EEEEEE] px-4 sm:px-6 text-[14px] sm:text-[21px] font-urbanistRegular outline-none focus:ring-2 focus:ring-[#000000] transition-all"
+          />
+          {errors.name && touched.name && (
+            <div className="mt-1 text-red-600 text-[12px] sm:text-[16px] font-urbanistRegular">{errors.name}</div>
+          )}
+        </div>
+        <div className="w-[280px] sm:w-[559px]">
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={form.phone}
+            disabled={submitted}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            maxLength={10}
+            inputMode="numeric"
+            className="w-full h-[50px] sm:h-[69px] rounded-[11px] bg-[#EEEEEE] px-4 sm:px-6 text-[14px] sm:text-[21px] font-urbanistRegular outline-none focus:ring-2 focus:ring-[#000000] transition-all"
+          />
+          {errors.phone && touched.phone && (
+            <div className="mt-1 text-red-600 text-[12px] sm:text-[16px] font-urbanistRegular">{errors.phone}</div>
+          )}
+        </div>
+        <button
+          type="submit"
+          disabled={submitted}
+          className={`w-[280px] sm:w-[559px] h-[42px] sm:h-[76px] rounded-[15px] bg-[#1EA887] mt-4 transition-all cursor-pointer ${
+            submitted ? "opacity-60 cursor-not-allowed" : "hover:scale-[1.02] hover:bg-[#169d79]"
+          }`}
+        >
+          <span className="text-white text-[16px] sm:text-[25px] font-urbanistBold font-bold">
+            Submit
+          </span>
+        </button>
+      </form>
+      <ToastContainer
+        position="top-center"
+        draggable={false}
+        closeOnClick
+        hideProgressBar
+        newestOnTop
+        limit={1}
+      />
     </div>
   );
-
-  return (
-    <section className="w-full mt-6 sm:mt-20">
-      {toast && <Toast message={toast} onClose={() => setToast("")} />}
-
-      {/* Card */}
-      <div
-        className={`mx-auto w-[96%] ${maxWidthClass} rounded-2xl border bg-white shadow-[0_10px_24px_rgba(0,0,0,0.08)]`}
-        style={{ borderColor: brand }}
-      >
-        {/* Heading */}
-        <div className="px-4 pt-3 text-center">
-          <h2
-            className="text-sm sm:text-2xl md:text-[28px] leading-tight font-bold"
-            style={{ color: brand }}
-          >
-            Looking for the right plan?
-          </h2>
-          <p className="text-[10px] sm:text-base mt-1 mb-1 text-gray-700">
-            Our experts are here to guide you
-          </p>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="px-4 pb-3 pt-1" noValidate>
-          {/* Inputs wrapper */}
-          <div
-            className="mt-3 flex flex-col gap-3 overflow-x-hidden pb-1
-                       sm:mt-5 sm:flex-row sm:items-end sm:gap-6 lg:gap-10"
-            onBlur={handleBlur}
-          >
-            {/* Name */}
-            <div className="flex-1 min-w-0">
-              <label
-                className="mb-1 block text-[9px] sm:text-sm font-semibold"
-                style={{ color: brand }}
-              >
-                Enter Your Name
-              </label>
-              <div className="relative">
-                <span
-                  className="pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 sm:left-3"
-                  style={{ color: brand }}
-                >
-                  <FaUserAlt className="h-[12px] w-[12px] sm:h-4 sm:w-4" />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  value={name}
-                  onChange={handleNameChange}
-                  className="w-full overflow-hidden rounded-lg border bg-transparent pl-5 pr-2 py-1 text-[9px] tracking-tight text-gray-800 focus:outline-none 
-                             sm:pl-10 sm:pr-3 sm:py-2 sm:text-sm md:text-base"
-                  style={{ borderColor: brand }}
-                  autoComplete="off"
-                />
-              </div>
-              <HelpLine error={nameError} />
-            </div>
-
-            {/* Phone */}
-            <div className="flex-1 min-w-0">
-              <label
-                className="mb-1 block text-[9px] sm:text-sm font-semibold"
-                style={{ color: brand }}
-              >
-                Enter Your Phone Number
-              </label>
-              <div className="relative">
-                <span
-                  className="pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 sm:left-3"
-                  style={{ color: brand }}
-                >
-                  <FaPhoneAlt className="h-[12px] w-[12px] sm:h-4 sm:w-4" />
-                </span>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]{10}"
-                  maxLength={10}
-                  placeholder="10-digit phone"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  className="w-full overflow-hidden rounded-lg border bg-transparent pl-5 pr-2 py-1 text-[9px] tracking-tight text-gray-800 focus:outline-none 
-                             sm:pl-10 sm:pr-3 sm:py-2 sm:text-sm md:text-base"
-                  style={{ borderColor: brand }}
-                  autoComplete="off"
-                />
-              </div>
-              <HelpLine error={phoneError} />
-            </div>
-
-            {/* Email */}
-            <div className="flex-1 min-w-0">
-              <label
-                className="mb-1 block text-[9px] sm:text-sm font-semibold"
-                style={{ color: brand }}
-              >
-                Enter Your Email
-              </label>
-              <div className="relative">
-                <span
-                  className="pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 sm:left-3"
-                  style={{ color: brand }}
-                >
-                  <FaRegEnvelope className="h-[12px] w-[12px] sm:h-4 sm:w-4" />
-                </span>
-                <input
-                  type="email"
-                  placeholder="abc@example.com"
-                  value={email}
-                  onChange={handleEmailChange}
-                  className="w-full overflow-hidden rounded-lg border bg-transparent pl-5 pr-2 py-1 text-[9px] tracking-tight text-gray-800 focus:outline-none 
-                             sm:pl-10 sm:pr-3 sm:py-2 sm:text-sm md:text-base"
-                  style={{ borderColor: brand }}
-                  autoComplete="email"
-                />
-              </div>
-              <HelpLine error={emailError} />
-            </div>
-          </div>
-
-          {/* T&C + Submit */}
-          <div className="mt-2 sm:mt-3 flex flex-col items-center">
-            <div className="flex items-center">
-              <input
-                id="tnc"
-                type="checkbox"
-                checked={agreed}
-                onChange={handleTncChange}
-                className="h-3 w-3 cursor-pointer border-gray-300 sm:h-4 sm:w-4"
-              />
-              <label
-                htmlFor="tnc"
-                className="ml-2 select-none text-[9px] leading-none sm:text-base sm:leading-normal"
-                style={{ color: brand }}
-              >
-                I agree to the{" "}
-                <span className="font-semibold underline cursor-pointer">
-                  Terms and Conditions.
-                </span>
-              </label>
-            </div>
-
-            <div className="h-[10px] leading-[10px] -mt-0.5 mb-2 sm:h-5 sm:leading-normal sm:mt-1 sm:mb-0">
-              {tncError ? (
-                <span className="text-[9px] leading-none text-red-600 sm:text-[11px]">
-                  {tncError}
-                </span>
-              ) : (
-                <span className="invisible text-[9px] leading-none sm:text-[11px]">
-                  .
-                </span>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              className="mt-2 w-full rounded-full bg-[#0D3B45] px-4 py-1 text-[10px] font-semibold text-white shadow-md transition hover:bg-[#0b313a] 
-                         sm:mt-2 sm:w-auto sm:px-10 sm:py-2.5 sm:text-sm md:px-12 md:text-base cursor-pointer"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Placeholder color */}
-      <style>{`
-        input::placeholder { color: ${brand}; opacity: 0.7; }
-      `}</style>
-    </section>
-  );
-};
-
-export default Form;
+}
