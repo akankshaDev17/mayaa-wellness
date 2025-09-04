@@ -143,12 +143,17 @@
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
+ @keyframes trusted-marquee-2 { 0% { transform: translateX(100%);} 100% { transform: translateX(0%);} }
 
 .trusted-animate-right {
-  animation: trusted-marquee-right 15s linear infinite;
+  animation: trusted-marquee-right 10s linear infinite;
   will-change: transform;
 }
+.trusted-animate-right-2 { animation: trusted-marquee-2 10s linear infinite; }
 .trusted-animate-right:hover{
+animation-play-state: paused;
+}
+.trusted-animate-right-2:hover{
 animation-play-state: paused;
 }
 

@@ -87,7 +87,7 @@ export default function Form() {
   };
 
   return (
-    <div className="bg-white rounded-[30px] sm:rounded-[47px] shadow-lg w-[320px] sm:w-[655px] h-[450px] sm:h-[739px] flex flex-col items-center py-4 sm:py-6 px-2 mx-auto relative">
+    <div className="bg-white rounded-[30px] sm:rounded-[47px] shadow-lg w-[320px] sm:w-[655px] h-[500px] sm:h-[739px] flex flex-col items-center py-4 sm:py-6 px-2 mx-auto relative">
       <div className="mt-8 sm:mt-12 mb-4 sm:mb-6 flex justify-center">
         <div className="flex items-center justify-center w-[80px] sm:w-[127px] h-[80px] sm:h-[127px] rounded-full bg-[#1EA887] mb-4 sm:mb-6">
           <MdCall size={55} color="#fff" />
