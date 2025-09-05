@@ -15,31 +15,110 @@ const Hero = () => {
   const isIPadAirBand  = useMediaQuery("(min-width: 820px) and (max-width: 1023px)", false); // [1]
   const isIPadProWidthBand = useMediaQuery("(min-width: 1024px) and (max-width: 1350px)", false); // [1]
 
-  // Orientation-specific exact-size fallbacks for iPad Pro (Safari quirks) [3]
-  const isIPadProPortrait = useMediaQuery("(width: 1024px) and (height: 1366px) and (orientation: portrait)", false); // [3]
-  const isIPadProLandscape = useMediaQuery("(width: 1366px) and (height: 1024px) and (orientation: landscape)", false); // [3]
+  // Orientation-specific exact-size fallbacks for iPad Pro (Safari quirks) [5]
+  const isIPadProPortrait = useMediaQuery("(width: 1024px) and (height: 1366px) and (orientation: portrait)", false); // [5]
+  const isIPadProLandscape = useMediaQuery("(width: 1366px) and (height: 1024px) and (orientation: landscape)", false); // [5]
 
   // Dedicated exact match for 749 × 1024 portrait + resilient approximate fallback [2]
-  const is749x1024PortraitExact = useMediaQuery("(width: 749px) and (height: 1024px) and (orientation: portrait)", false); // [2][3]
+  const is749x1024PortraitExact = useMediaQuery("(width: 749px) and (height: 1024px) and (orientation: portrait)", false); // [2][5]
   const is749x1024PortraitApprox = useMediaQuery("(min-width: 745px) and (max-width: 753px) and (min-height: 1018px) and (max-height: 1030px) and (orientation: portrait)", false); // [1]
-  const isTarget749 = is749x1024PortraitExact || is749x1024PortraitApprox; // robust match [1]
+  const isTarget749 = is749x1024PortraitExact || is749x1024PortraitApprox; // [1]
+
+  // NEW: 743-wide compact-mobile bucket (exact + approximate) [1][3]
+  const is743Exact = useMediaQuery("(width: 743px)", false); // [3]
+  const is743Approx = useMediaQuery("(min-width: 740px) and (max-width: 746px)", false); // small tolerance [1]
+  const isWidth743 = is743Exact || is743Approx; // [1]
 
   // Final tablet flags (gate by touch-primary to avoid desktop false positives) [1]
   const isIPadMini = isTouchPrimary && isIPadMiniBand; // [1]
   const isIPadAir  = isTouchPrimary && isIPadAirBand; // [1]
   const isIPadProCompact =
-    isTouchPrimary && (isIPadProWidthBand || isIPadProPortrait || isIPadProLandscape); // [1][3]
+    isTouchPrimary && (isIPadProWidthBand || isIPadProPortrait || isIPadProLandscape); // [1][5]
 
-  // Include the 749×1024 case inside tablets so we can size it specifically here (others intact) [1]
+  // Include the 749×1024 case inside tablets (others intact) [1]
   const isAnyTablet = isTarget749 || isIPadMini || isIPadAir || isIPadProCompact; // [1]
 
-  const handleProtect = () => console.log("Protect My Child"); // unchanged [4]
-  const handleBookFreeCall = () => console.log("Book a Free Call"); // unchanged [4]
+  const handleProtect = () => console.log("Protect My Child"); // unchanged [6]
+  const handleBookFreeCall = () => console.log("Book a Free Call"); // unchanged [6]
 
-  // Optional: debug which branch is active during tuning; remove in production
+  // Optional debug
   useEffect(() => {
-    // console.log({ w: window.innerWidth, h: window.innerHeight, isTouchPrimary, isTarget749, isIPadMini, isIPadAir, isIPadProCompact });
-  }, [isTouchPrimary, isTarget749, isIPadMini, isIPadAir, isIPadProCompact]); // [5]
+    // console.log({ w: window.innerWidth, h: window.innerHeight, isTouchPrimary, isWidth743, isTarget749, isIPadMini, isIPadAir, isIPadProCompact });
+  }, [isTouchPrimary, isWidth743, isTarget749, isIPadMini, isIPadAir, isIPadProCompact]); // [7]
+
+  // ---------------- 743-WIDE COMPACT-MOBILE ----------------
+  // Render the mobile DOM, but scale up a bit for the larger width. [1]
+  if (isWidth743) {
+    return (
+      <section className="relative bg-[#E8F8F5] overflow-hidden px-5 pt-8 pb-0">
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background: "linear-gradient(135deg, #1EA887 0%, #24D490 100%)",
+            clipPath: "polygon(100% 50%, 100% 120%, 0 100%)", // slightly higher wedge [1]
+          }}
+        />
+        <div className="relative z-10">
+          <h1 className="font-gilroyBold text-[49px] leading-[1.12] text-center">
+            <span className="block text-[#1EA887]">Your Child Is Leaving</span>
+            <span className="block">
+              <span className="text-[#1EA887]">for College.</span>{" "}
+              <span className="text-[#09384D]">We’ll Take</span>
+            </span>
+            <span className="block text-[#09384D]">Care of Their Health</span>
+            <span className="block text-[#09384D]">When You Can’t.</span>
+          </h1>
+          <p className="font-urbanistRegular text-[#09384D] text-[19px] leading-[1.5] text-center mt-4 max-w-[400px] mx-auto">
+            24/7 doctor consults, mental health support, annual checkups, and
+            accident insurance<br/>— all in one affordable plan.
+          </p>
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={handleProtect}
+              className="bg-[#1EA887] text-white font-juanaBold font-bold text-[15px] leading-[1.1] w-[194px] h-[54px] rounded-full shadow-[3.64px_4.37px_0_0_#58EE8B4A]"
+              style={{ borderRadius: "80px" }}
+            >
+              Protect My Child
+            </button>
+          </div>
+          <div className="flex items-center justify-center gap-7 mt-6">
+            <img
+              src={Collage}
+              alt="Trusted users"
+              className="h-[36px] w-[140px] object-contain rounded-full"
+            />
+            <div className="leading-[1.5] text-center">
+              <p className="font-urbanistRegular text-[#09384D] text-[12px]">Trusted by</p>
+              <p className="font-gilroyBold text-[#09384D] text-[16px]">
+                <span className="font-black">10,000+</span>{" "}
+                <span className="font-urbanistRegular font-normal">parents</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="relative w-full" style={{ height: 490 }}>
+          <img
+            src={HeroImg}
+            alt="Student"
+            className="absolute left-1/2 -translate-x-1/2 bottom-[-3.5px] h-[460px] w-[320px] object-contain select-none"
+            draggable={false}
+          />
+          <button
+            onClick={handleBookFreeCall}
+            className="bg-white text-[#09384D] font-juanaBold font-bold text-[14.5px] leading-[1.1] w-[180px] h-[50px] rounded-full shadow-[3px_4px_0_0_#22ABBE4A]"
+            style={{
+              borderRadius: "64px",
+              position: "absolute",
+              right: "8px",
+              bottom: "46px",
+            }}
+          >
+            Book a Free Call
+          </button>
+        </div>
+      </section>
+    ); // mobile DOM with scaled sizes for 743 [1]
+  }
 
   // ---------------- MOBILE (≤480px) ----------------
   if (isMobile) {
@@ -94,7 +173,7 @@ const Hero = () => {
           <img
             src={HeroImg}
             alt="Student"
-            className="absolute left-1/2 -translate-x-1/2 bottom-6 h-[413px] w-[293px] object-contain select-none"
+            className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[413px] w-[293px] object-contain select-none"
             draggable={false}
           />
           <button
@@ -117,12 +196,12 @@ const Hero = () => {
   // ----------- TABLET buckets (desktop-like DOM with compact sizing) -----------
   if (isAnyTablet) {
     const sizing = (() => {
-      // 1) Dedicated 749 × 1024 portrait bucket first (editable sizing) [2]
+      // 1) 749 × 1024 (exact + approx) first [2]
       if (isTarget749) {
         return {
-          h1Size: "text-[33px]",       // freely edit
-          subSize: "text-[14px]",      // freely edit
-          imgH: "h-[600px] mt-6",      // freely edit
+          h1Size: "text-[33px]",
+          subSize: "text-[14px]",
+          imgH: "h-[600px] mt-6",
           padX: "px-5",
           padY: "pt-5 pb-10",
           wedgeClip: "polygon(100% 8%, 100% 120%, 0 100%)",
@@ -132,7 +211,6 @@ const Hero = () => {
           rightOffset: "md:mr-8",
         };
       }
-
       // 2) iPad Mini [1]
       if (isIPadMini) {
         return {
@@ -148,7 +226,6 @@ const Hero = () => {
           rightOffset: "md:mr-8",
         };
       }
-
       // 3) iPad Air [1]
       if (isIPadAir) {
         return {
@@ -164,7 +241,6 @@ const Hero = () => {
           rightOffset: "md:mr-10",
         };
       }
-
       // 4) iPad Pro compact 1024–1350 [1]
       return {
         h1Size: "text-[39px]",
@@ -178,7 +254,7 @@ const Hero = () => {
         leftOffset: "md:ml-12",
         rightOffset: "md:mr-12",
       };
-    })(); // first-match wins [6]
+    })(); // first-match wins [8]
 
     return (
       <section className="relative bg-[#E8F8F5] overflow-hidden">
