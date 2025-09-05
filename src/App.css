@@ -175,4 +175,9 @@ animation-play-state: paused;
 .animate-carousel:hover{
   animation-play-state: paused;
 }
-
+@media (min-width:640px)and (max-width:767px){
+  .tab-screen{
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+}

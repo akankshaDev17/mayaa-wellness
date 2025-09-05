@@ -1,26 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useMediaQuery from "../hooks/useMediaQuery";
 import HeroImg from "../assets/Hero.svg";
 import Collage from "../assets/Collage.webp";
 
 const Hero = () => {
-  const isMobile = useMediaQuery("(max-width: 480px)", false);
-  const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1350px)", false);
+  // ---------------- Base queries ----------------
+  const isMobile = useMediaQuery("(max-width: 480px)", false); // unchanged mobile [1]
 
-  const handleProtect = () => console.log("Protect My Child");
-  const handleBookFreeCall = () => console.log("Book a Free Call");
+  // Feature query to separate touch tablets from desktop at same widths
+  const isTouchPrimary = useMediaQuery("(hover: none) and (pointer: coarse)", false); // iPad/phones [1]
+
+  // Width bands (non-overlapping) for tablets [1]
+  const isIPadMiniBand = useMediaQuery("(min-width: 768px) and (max-width: 819px)", false); // [1]
+  const isIPadAirBand  = useMediaQuery("(min-width: 820px) and (max-width: 1023px)", false); // [1]
+  const isIPadProWidthBand = useMediaQuery("(min-width: 1024px) and (max-width: 1350px)", false); // [1]
+
+  // Orientation-specific exact-size fallbacks for iPad Pro (Safari quirks) [3]
+  const isIPadProPortrait = useMediaQuery("(width: 1024px) and (height: 1366px) and (orientation: portrait)", false); // [3]
+  const isIPadProLandscape = useMediaQuery("(width: 1366px) and (height: 1024px) and (orientation: landscape)", false); // [3]
+
+  // Dedicated exact match for 749 × 1024 portrait + resilient approximate fallback [2]
+  const is749x1024PortraitExact = useMediaQuery("(width: 749px) and (height: 1024px) and (orientation: portrait)", false); // [2][3]
+  const is749x1024PortraitApprox = useMediaQuery("(min-width: 745px) and (max-width: 753px) and (min-height: 1018px) and (max-height: 1030px) and (orientation: portrait)", false); // [1]
+  const isTarget749 = is749x1024PortraitExact || is749x1024PortraitApprox; // robust match [1]
+
+  // Final tablet flags (gate by touch-primary to avoid desktop false positives) [1]
+  const isIPadMini = isTouchPrimary && isIPadMiniBand; // [1]
+  const isIPadAir  = isTouchPrimary && isIPadAirBand; // [1]
+  const isIPadProCompact =
+    isTouchPrimary && (isIPadProWidthBand || isIPadProPortrait || isIPadProLandscape); // [1][3]
+
+  // Include the 749×1024 case inside tablets so we can size it specifically here (others intact) [1]
+  const isAnyTablet = isTarget749 || isIPadMini || isIPadAir || isIPadProCompact; // [1]
+
+  const handleProtect = () => console.log("Protect My Child"); // unchanged [4]
+  const handleBookFreeCall = () => console.log("Book a Free Call"); // unchanged [4]
+
+  // Optional: debug which branch is active during tuning; remove in production
+  useEffect(() => {
+    // console.log({ w: window.innerWidth, h: window.innerHeight, isTouchPrimary, isTarget749, isIPadMini, isIPadAir, isIPadProCompact });
+  }, [isTouchPrimary, isTarget749, isIPadMini, isIPadAir, isIPadProCompact]); // [5]
 
   // ---------------- MOBILE (≤480px) ----------------
   if (isMobile) {
     return (
-      <section
-        className="
-          relative bg-[#E8F8F5] overflow-hidden
-          px-4 pt-7
-          pb-0
-        "
-      >
-        {/* Wedge confined to lower-right (SS1) */}
+      <section className="relative bg-[#E8F8F5] overflow-hidden px-4 pt-7 pb-0">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -28,10 +52,7 @@ const Hero = () => {
             clipPath: "polygon(100% 55%, 100% 120%, 0 100%)",
           }}
         />
-
-        {/* Content wrapper (kept above wedge) */}
         <div className="relative z-10">
-          {/* Headline (4 lines, as per SS1) */}
           <h1 className="font-gilroyBold text-[31.26px] leading-[1.11] text-center">
             <span className="block text-[#1EA887]">Your Child Is Leaving</span>
             <span className="block">
@@ -41,14 +62,10 @@ const Hero = () => {
             <span className="block text-[#09384D]">Care of Their Health</span>
             <span className="block text-[#09384D]">When You Can’t.</span>
           </h1>
-
-          {/* Subtext */}
           <p className="font-urbanistRegular text-[#09384D] text-[16px] leading-[1.5] text-center mt-4 max-w-[349px] mx-auto">
             24/7 doctor consults, mental health support, annual checkups, and
             accident insurance<br/>— all in one affordable plan.
           </p>
-
-          {/* Protect CTA */}
           <div className="flex justify-center mt-5">
             <button
               onClick={handleProtect}
@@ -58,8 +75,6 @@ const Hero = () => {
               Protect My Child
             </button>
           </div>
-
-          {/* Trust row */}
           <div className="flex items-center justify-center gap-6 mt-5">
             <img
               src={Collage}
@@ -67,9 +82,7 @@ const Hero = () => {
               className="h-[30px] w-[117px] object-contain rounded-full"
             />
             <div className="leading-[1.5] text-center">
-              <p className="font-urbanistRegular text-[#09384D] text-[10.9px]">
-                Trusted by
-              </p>
+              <p className="font-urbanistRegular text-[#09384D] text-[10.9px]">Trusted by</p>
               <p className="font-gilroyBold text-[#09384D] text-[14px]">
                 <span className="font-black">10,000+</span>{" "}
                 <span className="font-urbanistRegular font-normal">parents</span>
@@ -77,31 +90,16 @@ const Hero = () => {
             </div>
           </div>
         </div>
-
-        {/* Sticky-bottom image and docked button */}
         <div className="relative w-full" style={{ height: 440 }}>
-          {/* Student image stuck to bottom */}
           <img
             src={HeroImg}
             alt="Student"
-            className="
-              absolute left-1/2 -translate-x-1/2 bottom-6
-              h-[413px] w-[293px] object-contain
-              select-none
-            "
+            className="absolute left-1/2 -translate-x-1/2 bottom-6 h-[413px] w-[293px] object-contain select-none"
             draggable={false}
           />
-
-          {/* Book a Free Call pill inside green area near bottom-right (with padding) */}
           <button
             onClick={handleBookFreeCall}
-            className="
-              bg-white text-[#09384D]
-              font-juanaBold font-bold
-              text-[13.7px] leading-[1.1]
-              w-[168px] h-[46.6px]
-              rounded-full shadow-[2.86px_3.44px_0_0_#22ABBE4A]
-            "
+            className="bg-white text-[#09384D] font-juanaBold font-bold text-[13.7px] leading-[1.1] w-[168px] h-[46.6px] rounded-full shadow-[2.86px_3.44px_0_0_#22ABBE4A]"
             style={{
               borderRadius: "60.13px",
               position: "absolute",
@@ -113,139 +111,143 @@ const Hero = () => {
           </button>
         </div>
       </section>
-    );
+    ); // mobile unchanged [1]
   }
 
-  // ----------- TABLET / NEST HUB MAX (min-width: 768px, max-width: 1279px) -----------
-  if (isTablet) {
+  // ----------- TABLET buckets (desktop-like DOM with compact sizing) -----------
+  if (isAnyTablet) {
+    const sizing = (() => {
+      // 1) Dedicated 749 × 1024 portrait bucket first (editable sizing) [2]
+      if (isTarget749) {
+        return {
+          h1Size: "text-[33px]",       // freely edit
+          subSize: "text-[14px]",      // freely edit
+          imgH: "h-[600px] mt-6",      // freely edit
+          padX: "px-5",
+          padY: "pt-5 pb-10",
+          wedgeClip: "polygon(100% 8%, 100% 120%, 0 100%)",
+          ctaW: 210, ctaH: 56,
+          gap: "gap-5",
+          leftOffset: "md:ml-8",
+          rightOffset: "md:mr-8",
+        };
+      }
+
+      // 2) iPad Mini [1]
+      if (isIPadMini) {
+        return {
+          h1Size: "text-[31px]",
+          subSize: "text-[13px]",
+          imgH: "h-[560px] mt-10",
+          padX: "px-5",
+          padY: "pt-4 pb-9",
+          wedgeClip: "polygon(100% 9%, 100% 120%, 0 100%)",
+          ctaW: 205, ctaH: 54,
+          gap: "gap-5",
+          leftOffset: "md:ml-8",
+          rightOffset: "md:mr-8",
+        };
+      }
+
+      // 3) iPad Air [1]
+      if (isIPadAir) {
+        return {
+          h1Size: "text-[32px]",
+          subSize: "text-[14px]",
+          imgH: "h-[600px] mt-10",
+          padX: "px-6",
+          padY: "pt-5 pb-10",
+          wedgeClip: "polygon(100% 8%, 100% 120%, 0 100%)",
+          ctaW: 210, ctaH: 56,
+          gap: "gap-5",
+          leftOffset: "md:ml-10",
+          rightOffset: "md:mr-10",
+        };
+      }
+
+      // 4) iPad Pro compact 1024–1350 [1]
+      return {
+        h1Size: "text-[39px]",
+        subSize: "text-[13px]",
+        imgH: "h-[530px] mt-2",
+        padX: "px-6",
+        padY: "pt-6 pb-12",
+        wedgeClip: "polygon(100% 8%, 100% 120%, 0 100%)",
+        ctaW: 220, ctaH: 58,
+        gap: "gap-6",
+        leftOffset: "md:ml-12",
+        rightOffset: "md:mr-12",
+      };
+    })(); // first-match wins [6]
+
     return (
-      <section className="relative bg-[#E8F8F5] overflow-hidden px-3 pt-4 pb-8">
-        {/* Gradient wedge on right */}
+      <section className="relative bg-[#E8F8F5] overflow-hidden">
         <div
           className="absolute top-0 right-0 h-full w-full md:w-1/2 z-0"
           style={{
             background: "linear-gradient(135deg, #1EA887, #24D490)",
-            clipPath: "polygon(100% 8%, 100% 120%, 0 100%)",
+            clipPath: sizing.wedgeClip,
           }}
         />
-        <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between pt-2 pb-8 md:pt-4 px-3 gap-3 md:gap-4">
-          {/* Left */}
-          <div className="z-10 w-full md:w-1/2 flex flex-col text-left -mt-1 md:ml-6">
-            <h1
-              className="
-                font-gilroyBold text-[#09384D]
-    text-[34px]
-    md:text-[38px] md:leading-[1.12]
-    max-w-[520px]
-    mb-2
-              "
-            >
-              <span className="text-[#1EA887] block">Your Child Is Leaving</span>
-              <span className="text-[#1EA887] block">for College.</span>{" "}
-              We’ll Take
+        <div className={`relative max-w-8xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between ${sizing.padY} ${sizing.padX} ${sizing.gap}`}>
+          <div className={`z-10 w-full md:w-1/2 flex flex-col text-left -mt-2 ${sizing.leftOffset}`}>
+            <h1 className={`font-gilroyBold text-[#09384D] leading-[1.12] ${sizing.h1Size} max-w-[760px] mb-3`}>
+              <span className="text-[#1EA887]">Your Child Is Leaving</span>
               <br />
-              <span className="text-[#09384D]">Care of Their Health</span>
+              <span className="text-[#1EA887]">for College.</span> We’ll Take
               <br />
-              <span className="text-[#09384D]">When You Can’t.</span>
+              Care of Their Health
+              <br />
+              When You Can’t.
             </h1>
-
-            <p
-              className="
-                font-urbanistRegular font-normal text-[#09384D]
-                text-[15px] leading-[1.48]
-                max-w-[420px]
-                mb-3
-              "
-            >
-              24/7 doctor consults, mental health support, annual checkups, and
-              accident insurance — all in one affordable plan.
+            <p className={`font-urbanistRegular text-[#09384D] ${sizing.subSize} leading-[1.48] max-w-[600px] mb-5`}>
+              24/7 doctor consults, mental health support, annual checkups, and accident insurance — all in one affordable plan.
             </p>
-
-            <div
-              className="
-                flex items-center
-                gap-3 md:gap-4
-                mb-4
-              "
-            >
-              <img
-                src={Collage}
-                alt="Trusted users"
-                className="
-                  h-[38px] w-[120px] object-contain
-                  rounded-full
-                "
-              />
+            <div className="flex items-center gap-4 mb-5">
+              <img src={Collage} alt="Trusted users" className="h-[44px] w-auto rounded-full" />
               <div className="leading-[1.5]">
-                <p className="font-urbanistRegular font-normal text-[#09384D] text-[13px]">
-                  Trusted by
-                </p>
-                <p className="font-gilroyBold text-[#09384D] text-[16px]">
+                <p className={`font-urbanistRegular text-[#09384D] ${sizing.subSize}`}>Trusted by</p>
+                <p className={`font-gilroyBold text-[#09384D] ${sizing.subSize}`}>
                   <span className="font-black">10,000+</span>{" "}
                   <span className="font-urbanistRegular font-normal">parents</span>
                 </p>
               </div>
             </div>
-
             <div>
               <button
                 onClick={handleProtect}
-                className="
-                  bg-[#1EA887] text-white font-juanaBold font-bold  text-center
-                  text-[15px] leading-[1.1] px-5 py-2 
-                  w-[180px] h-[50px]
-                  rounded-full
-                  shadow-[4px_5px_0_0_#58EE8B4A]
-                  transition-colors duration-200 hover:bg-[#189D74] cursor-pointer
-                "
-                style={{ borderRadius: "80px" }}
+                className="bg-[#1EA887] text-white font-juanaBold font-bold text-center leading-[1.1] rounded-full shadow-[4px_5px_0_0_#58EE8B4A] transition-colors duration-200 hover:bg-[#189D74] cursor-pointer"
+                style={{
+                  borderRadius: 96,
+                  width: sizing.ctaW,
+                  height: sizing.ctaH,
+                  fontSize:
+                    sizing.h1Size === "text-[28px]" ? 15 :
+                    sizing.h1Size === "text-[30px]" ? 16 :
+                    sizing.h1Size === "text-[32px]" ? 17 : 18,
+                  padding: "10px 20px",
+                }}
               >
                 Protect My Child
               </button>
             </div>
           </div>
 
-          {/* Right image */}
-          <div className="relative w-full md:w-1/2 min-h-[380px] md:mr-6">
+          <div className={`relative w-full md:w-1/2 min-h-[520px] ${sizing.rightOffset}`}>
             <img
               src={HeroImg}
               alt="Student"
-              className="
-                absolute top-0 right-0
-                h-[370px] w-[250px]
-                object-contain object-top
-                rounded-lg
-                opacity-100
-              "
+              className={`absolute top-0 right-0 ${sizing.imgH} w-auto object-contain object-top rounded-lg md:rounded-xl`}
             />
           </div>
         </div>
-
-        {/* Book a Free Call pill inside green area near bottom-right */}
-        <button
-          onClick={handleBookFreeCall}
-          className="
-            bg-white text-[#09384D]
-            font-juanaBold font-bold
-            text-[13px] leading-[1.1]
-            w-[160px] h-[44px]
-            rounded-full shadow-[2.5px_3px_0_0_#22ABBE4A]
-            absolute right-6 bottom-10
-          "
-          style={{
-            borderRadius: "60px"
-          }}
-        >
-          Book a Free Call
-        </button>
       </section>
-    );
+    ); // tablet branch [1]
   }
 
   // ---------------- DESKTOP (unchanged) ----------------
   return (
     <section className="relative bg-[#E8F8F5] overflow-hidden">
-      {/* Gradient wedge on right */}
       <div
         className="absolute top-0 right-0 h-full w-full md:w-1/2 z-0"
         style={{
@@ -254,19 +256,8 @@ const Hero = () => {
         }}
       />
       <div className="relative max-w-8xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between pt-2 pb-8 md:pt-4 md:pb-10 lg:pt-6 lg:pb-14 px-4 sm:px-6 lg:px-8 gap-4 md:gap-6">
-        {/* Left */}
         <div className="z-10 w-full md:w-1/2 flex flex-col text-left -mt-2 sm:-mt-3 md:-mt-4 lg:-mt-34 md:ml-8 lg:ml-12">
-          <h1
-            className="
-              font-gilroyBold text-[#09384D]
-              text-[28px]
-              sm:text-[34px]
-              md:text-[38px]
-              lg:text-[62.39px] lg:leading-[1.11]
-              lg:max-w-[799px]
-              mb-3 sm:mb-4
-            "
-          >
+          <h1 className="font-gilroyBold text-[#09384D] text-[28px] sm:text-[34px] md:text-[38px] lg:text-[62.39px] lg:leading-[1.11] lg:max-w-[799px] mb-3 sm:mb-4">
             <span className="text-[#1EA887]">Your Child Is Leaving</span>
             <br />
             <span className="text-[#1EA887]">for College.</span> We’ll Take
@@ -275,38 +266,15 @@ const Hero = () => {
             <br />
             When You Can’t.
           </h1>
-
-          <p
-            className="
-              font-urbanistRegular font-normal text-[#09384D]
-              text-[14px] leading-[1.5]
-              sm:text-[16px]
-              md:text-[18px]
-              lg:text-[20px] lg:leading-[1.5] lg:max-w-[627px]
-              mb-5 md:mb-6
-            "
-          >
+          <p className="font-urbanistRegular font-normal text-[#09384D] text-[14px] leading-[1.5] sm:text-[16px] md:text-[18px] lg:text-[20px] lg:leading-[1.5] lg:max-w-[627px] mb-5 md:mb-6">
             24/7 doctor consults, mental health support, annual checkups, and
             accident insurance — all in one affordable plan.
           </p>
-
-          <div
-            className="
-              flex items-center
-              gap-3 sm:gap-4 md:gap-6 lg:gap-[44px]
-              mb-5 md:mb-6
-            "
-          >
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6 lg:gap-[44px] mb-5 md:mb-6">
             <img
               src={Collage}
               alt="Trusted users"
-              className="
-                h-[36px] w-auto
-                sm:h-[44px]
-                md:h-[50px]
-                lg:h-[55px] lg:w-[215px]
-                rounded-full
-              "
+              className="h-[36px] w-auto sm:h-[44px] md:h-[50px] lg:h-[55px] lg:w-[215px] rounded-full"
             />
             <div className="leading-[1.5]">
               <p className="font-urbanistRegular font-normal text-[#09384D] text-[14px] sm:text-[16px] md:text-[18px] lg:text-[20px]">
@@ -318,47 +286,26 @@ const Hero = () => {
               </p>
             </div>
           </div>
-
           <div>
             <button
               onClick={handleProtect}
-              className="
-                bg-[#1EA887] text-white font-juanaBold font-bold  text-center
-                text-[13px] leading-[1.1] px-5 py-2 
-                sm:text-[16px] sm:px-6 sm:py-2.5
-                md:text-[18px] md:px-7 md:py-3
-                lg:text-[24px] lg:w-[250px] lg:h-[64px]
-                rounded-full
-                shadow-[5px_6px_0_0_#58EE8B4A]
-                transition-colors duration-200 hover:bg-[#189D74] cursor-pointer
-              "
+              className="bg-[#1EA887] text-white font-juanaBold font-bold  text-center text-[13px] leading-[1.1] px-5 py-2 sm:text-[16px] sm:px-6 sm:py-2.5 md:text-[18px] md:px-7 md:py-3 lg:text-[24px] lg:w-[250px] lg:h-[64px] rounded-full shadow-[5px_6px_0_0_#58EE8B4A] transition-colors duration-200 hover:bg-[#189D74] cursor-pointer"
               style={{ borderRadius: "105px" }}
             >
               Protect My Child
             </button>
           </div>
         </div>
-
-        {/* Right image */}
         <div className="relative w-full md:w-1/2 min-h-[360px] sm:min-h-[420px] md:min-h-[560px] lg:min-h-[800px]  md:mr-8 lg:mr-12">
           <img
             src={HeroImg}
             alt="Student"
-            className="
-              absolute top-0 right-0
-              h-[360px] w-auto
-              sm:h-[420px]
-              md:h-[560px]
-              lg:h-[800px] lg:w-[567px]
-              object-contain object-top
-              rounded-lg md:rounded-xl
-              opacity-100
-            "
+            className="absolute top-0 right-0 h-[360px] w-auto sm:h-[420px] md:h-[560px] lg:h-[800px] lg:w-[567px] object-contain object-top rounded-lg md:rounded-xl opacity-100"
           />
         </div>
       </div>
     </section>
-  );
+  ); // desktop unchanged [1]
 };
 
 export default Hero;
