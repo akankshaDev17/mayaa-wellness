@@ -32,7 +32,7 @@ const Hero = () => {
 
   // NEW: 743-wide compact-mobile bucket (now a 743–767px range) [19][17]
   // Replaced exact/approx with inclusive min–max band per MDN guidance. [web:12][web:5]
-  const is743Range = useMediaQuery("(min-width: 743px) and (max-width: 767px)", false); // [web:12]
+  const is743Range = useMediaQuery("(min-width: 481px) and (max-width: 767.5px)", false); // [web:12]
   const isWidth743 = is743Range; // preserve variable used below [web:12]
 
 
@@ -61,7 +61,7 @@ const Hero = () => {
   // Render the mobile DOM, but scale up a bit for the larger width. [1]
   if (isWidth743) {
     return (
-      <section className="relative bg-[#E8F8F5] overflow-hidden px-5 pt-8 pb-0">
+      <section className="relative bg-[#F4FFFC] overflow-hidden px-5 pt-8 pb-0">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -135,7 +135,7 @@ const Hero = () => {
   // ---------------- MOBILE (≤480px) ----------------
   if (isMobile) {
     return (
-      <section className="relative bg-[#E8F8F5] overflow-hidden px-4 pt-7 pb-0">
+      <section className="relative bg-[#F4FFFC] overflow-hidden px-4 pt-7 pb-0">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -271,7 +271,7 @@ const Hero = () => {
 
 
     return (
-      <section className="relative bg-[#E8F8F5] overflow-hidden">
+      <section className="relative bg-[#F4FFFC] overflow-hidden">
         <div
           className="absolute top-0 right-0 h-full w-full md:w-1/2 z-0"
           style={{
