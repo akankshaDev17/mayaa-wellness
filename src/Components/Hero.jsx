@@ -3,31 +3,38 @@ import useMediaQuery from "../hooks/useMediaQuery";
 import HeroImg from "../assets/Hero.svg";
 import Collage from "../assets/Collage.webp";
 
+
 const Hero = () => {
   // ---------------- Base queries ----------------
-  const isMobile = useMediaQuery("(max-width: 480px)", false); // unchanged mobile [1]
+  const isMobile = useMediaQuery("(max-width: 480px)", false); // unchanged mobile [19]
+
 
   // Feature query to separate touch tablets from desktop at same widths
-  const isTouchPrimary = useMediaQuery("(hover: none) and (pointer: coarse)", false); // iPad/phones [1]
+  const isTouchPrimary = useMediaQuery("(hover: none) and (pointer: coarse)", false); // iPad/phones [19]
 
-  // Width bands (non-overlapping) for tablets [1]
-  const isIPadMiniBand = useMediaQuery("(min-width: 768px) and (max-width: 819px)", false); // [1]
-  const isIPadAirBand  = useMediaQuery("(min-width: 820px) and (max-width: 1023px)", false); // [1]
-  const isIPadProWidthBand = useMediaQuery("(min-width: 1024px) and (max-width: 1350px)", false); // [1]
 
-  // Orientation-specific exact-size fallbacks for iPad Pro (Safari quirks) [5]
-  const isIPadProPortrait = useMediaQuery("(width: 1024px) and (height: 1366px) and (orientation: portrait)", false); // [5]
-  const isIPadProLandscape = useMediaQuery("(width: 1366px) and (height: 1024px) and (orientation: landscape)", false); // [5]
+  // Width bands (non-overlapping) for tablets [19]
+  const isIPadMiniBand = useMediaQuery("(min-width: 768px) and (max-width: 819px)", false); // [19]
+  const isIPadAirBand  = useMediaQuery("(min-width: 820px) and (max-width: 1023px)", false); // [19]
+  const isIPadProWidthBand = useMediaQuery("(min-width: 1024px) and (max-width: 1350px)", false); // [19]
 
-  // Dedicated exact match for 749 × 1024 portrait + resilient approximate fallback [2]
-  const is749x1024PortraitExact = useMediaQuery("(width: 749px) and (height: 1024px) and (orientation: portrait)", false); // [2][5]
-  const is749x1024PortraitApprox = useMediaQuery("(min-width: 745px) and (max-width: 753px) and (min-height: 1018px) and (max-height: 1030px) and (orientation: portrait)", false); // [1]
-  const isTarget749 = is749x1024PortraitExact || is749x1024PortraitApprox; // [1]
 
-  // NEW: 743-wide compact-mobile bucket (exact + approximate) [1][3]
-  const is743Exact = useMediaQuery("(width: 743px)", false); // [3]
-  const is743Approx = useMediaQuery("(min-width: 740px) and (max-width: 746px)", false); // small tolerance [1]
-  const isWidth743 = is743Exact || is743Approx; // [1]
+  // Orientation-specific exact-size fallbacks for iPad Pro (Safari quirks) [2]
+  const isIPadProPortrait = useMediaQuery("(width: 1024px) and (height: 1366px) and (orientation: portrait)", false); // [2]
+  const isIPadProLandscape = useMediaQuery("(width: 1366px) and (height: 1024px) and (orientation: landscape)", false); // [2]
+
+
+  // Dedicated exact match for 749 × 1024 portrait + resilient approximate fallback [10]
+  const is749x1024PortraitExact = useMediaQuery("(width: 749px) and (height: 1024px) and (orientation: portrait)", false); // [10][2]
+  const is749x1024PortraitApprox = useMediaQuery("(min-width: 745px) and (max-width: 753px) and (min-height: 1018px) and (max-height: 1030px) and (orientation: portrait)", false); // [19]
+  const isTarget749 = is749x1024PortraitExact || is749x1024PortraitApprox; // [19]
+
+
+  // NEW: 743-wide compact-mobile bucket (now a 743–767px range) [19][17]
+  // Replaced exact/approx with inclusive min–max band per MDN guidance. [web:12][web:5]
+  const is743Range = useMediaQuery("(min-width: 743px) and (max-width: 767px)", false); // [web:12]
+  const isWidth743 = is743Range; // preserve variable used below [web:12]
+
 
   // Final tablet flags (gate by touch-primary to avoid desktop false positives) [1]
   const isIPadMini = isTouchPrimary && isIPadMiniBand; // [1]
@@ -35,16 +42,20 @@ const Hero = () => {
   const isIPadProCompact =
     isTouchPrimary && (isIPadProWidthBand || isIPadProPortrait || isIPadProLandscape); // [1][5]
 
+
   // Include the 749×1024 case inside tablets (others intact) [1]
   const isAnyTablet = isTarget749 || isIPadMini || isIPadAir || isIPadProCompact; // [1]
 
+
   const handleProtect = () => console.log("Protect My Child"); // unchanged [6]
   const handleBookFreeCall = () => console.log("Book a Free Call"); // unchanged [6]
+
 
   // Optional debug
   useEffect(() => {
     // console.log({ w: window.innerWidth, h: window.innerHeight, isTouchPrimary, isWidth743, isTarget749, isIPadMini, isIPadAir, isIPadProCompact });
   }, [isTouchPrimary, isWidth743, isTarget749, isIPadMini, isIPadAir, isIPadProCompact]); // [7]
+
 
   // ---------------- 743-WIDE COMPACT-MOBILE ----------------
   // Render the mobile DOM, but scale up a bit for the larger width. [1]
@@ -117,8 +128,9 @@ const Hero = () => {
           </button>
         </div>
       </section>
-    ); // mobile DOM with scaled sizes for 743 [1]
+    ); // mobile DOM with scaled sizes for 743–767 [1]
   }
+
 
   // ---------------- MOBILE (≤480px) ----------------
   if (isMobile) {
@@ -193,6 +205,7 @@ const Hero = () => {
     ); // mobile unchanged [1]
   }
 
+
   // ----------- TABLET buckets (desktop-like DOM with compact sizing) -----------
   if (isAnyTablet) {
     const sizing = (() => {
@@ -256,6 +269,7 @@ const Hero = () => {
       };
     })(); // first-match wins [8]
 
+
     return (
       <section className="relative bg-[#E8F8F5] overflow-hidden">
         <div
@@ -309,6 +323,7 @@ const Hero = () => {
             </div>
           </div>
 
+
           <div className={`relative w-full md:w-1/2 min-h-[520px] ${sizing.rightOffset}`}>
             <img
               src={HeroImg}
@@ -320,6 +335,7 @@ const Hero = () => {
       </section>
     ); // tablet branch [1]
   }
+
 
   // ---------------- DESKTOP (unchanged) ----------------
   return (
@@ -342,7 +358,7 @@ const Hero = () => {
             <br />
             When You Can’t.
           </h1>
-          <p className="font-urbanistRegular font-normal text-[#09384D] text-[14px] leading-[1.5] sm:text-[16px] md:text-[18px] lg:text-[20px] lg:leading-[1.5] lg:max-w-[627px] mb-5 md:mb-6">
+          <p className="font-urbanistRegular font-normal text-[#09384D] text-[14px] leading-[1.5] sm:text=[16px] md:text-[18px] lg:text-[20px] lg:leading-[1.5] lg:max-w-[627px] mb-5 md:mb-6">
             24/7 doctor consults, mental health support, annual checkups, and
             accident insurance — all in one affordable plan.
           </p>
@@ -383,5 +399,6 @@ const Hero = () => {
     </section>
   ); // desktop unchanged [1]
 };
+
 
 export default Hero;
