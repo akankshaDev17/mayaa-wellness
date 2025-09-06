@@ -66,7 +66,7 @@ const Pop = () => {
         <div className="w-full px-5 py-4">
           <div className="flex items-center justify-between gap-4">
             {/* Card 1 */}
-            <div className="flex items-center gap-2.5 w-[158px] h-[62px] bg-white rounded-[4px] shadow-[0px_4px_14px_4px_#0000001A] px-2.5">
+            <div className="flex items-center gap-3 w-[158px] h-[62px] bg-white rounded-[4px] shadow-[0px_4px_14px_4px_#0000001A] px-2.5">
               <img src={Pop1} alt="Starting at" className="w-[21px] h-[26px] object-contain" style={{ filter: "none", WebkitFilter: "none", mixBlendMode: "normal" }} draggable={false} />
               <p className="font-gilroySemiBold text-[#09384D] text-[12.2px] leading-[15.4px]">
                 <span className="block whitespace-nowrap">Starting at</span>
@@ -74,7 +74,7 @@ const Pop = () => {
               </p>
             </div>
             {/* Card 2 */}
-            <div className="flex items-center gap-2.5 w-[152px] h-[62px] bg-white rounded-[4px] shadow-[0px_4px_14px_4px_#0000001A] px-2.5">
+            <div className="flex items-center gap-3 w-[152px] h-[62px] bg-white rounded-[4px] shadow-[0px_4px_14px_4px_#0000001A] px-2.5">
               <img src={Pop2} alt="Pan‑India" className="w-[19px] h-[23px] object-contain" style={{ filter: "none", WebkitFilter: "none", mixBlendMode: "normal" }} draggable={false} />
               <p className="font-gilroySemiBold text-[#09384D] text-[11.3px] leading-[15.4px]">
                 <span className="block whitespace-nowrap">Pan‑India</span>
